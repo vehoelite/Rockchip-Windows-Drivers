@@ -9,6 +9,7 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
       
 env:
   SOLUTION_FILE_PATH: .\build\RockchipDrivers.sln
