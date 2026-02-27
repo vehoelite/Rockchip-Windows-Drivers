@@ -14,9 +14,12 @@ on:
 env:
   SOLUTION_FILE_PATH: .\build\RockchipDrivers.sln
 
+permissions:
+  contents: read
+
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     strategy:
       matrix:
         PLATFORM: [ARM64]
@@ -31,9 +34,6 @@ jobs:
       uses: microsoft/setup-msbuild@v2
       with:
         msbuild-architecture: x64
-
-    - name: Install WDK
-      run: choco install windowsdriverkit11 -y --no-progress
 
     - name: Build solution
       working-directory: ${{env.GITHUB_WORKSPACE}}
