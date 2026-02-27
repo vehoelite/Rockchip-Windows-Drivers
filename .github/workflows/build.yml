@@ -9,6 +9,7 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
       
 env:
   SOLUTION_FILE_PATH: .\build\RockchipDrivers.sln
@@ -24,13 +25,16 @@ jobs:
       DRIVER_OUTPUT_DIR: build\${{matrix.PLATFORM}}\${{matrix.CONFIGURATION}}\Output
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
       with:
         msbuild-architecture: x64
-  
+
+    - name: Install WDK
+      run: choco install windowsdriverkit11 -y --no-progress
+
     - name: Build solution
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild /m /p:Configuration=${{matrix.CONFIGURATION}} /p:Platform=${{matrix.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
